@@ -3,10 +3,13 @@
 
 #include "Problema.h"
 #include "Solucion.h"
+#include <vector>
+
+using namespace std;
 
 Solucion CollageBranchBound(Problema p);
-void BBFunc(std::vector<std::vector<int> > matrix,int& filas_elim, std::vector<int>& columnas_elim, int& cota_sup, int& cota_inf, int& coste, Solucion& sol, Solucion& mejor_sol);
-int ValorMin(std::vector<std::vector<int> > matrix, int filas_elim, std::vector<int> columas_elim);
+void BBFunc(vector<vector<int> > matrix, int& filas_elim, vector<int>& columnas_elim, int& cota_sup, int& cota_inf, int& coste, Solucion& sol, Solucion& mejor_sol);
+int ValorMin(vector<vector<int> > matrix, int filas_elim, vector<int> columas_elim);
 
 
 #endif // ALGORITMOS_H_INCLUDED
