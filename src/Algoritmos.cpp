@@ -53,14 +53,10 @@ int ValorMin(vector<vector<int> > matrix, int filas_elim, vector<int> columnas_e
   vector<int> vmin(matrix.size(),260);   //Usamos 260 pues sabemos que cada elem de la matriz es el valor abs de la diferencia de dos elementos menores que 255
   int rta = 0;
 
-  for (unsigned i = 0; i < matrix.size(); i++){
-    if (i >= filas_elim){
-      for (unsigned j = 0; j < matrix[i].size(); j++)
-        if (!In(columnas_elim, j) && (matrix[i][j] < vmin[i]))
-          vmin[i] = matrix[i][j];
-    }
-    else
-      vmin[i]=0;
+  for (unsigned i = filas_elim; i < matrix.size(); i++){
+    for (unsigned j = 0; j < matrix[i].size(); j++)
+      if (!In(columnas_elim, j) && (matrix[i][j] < vmin[i]))
+        vmin[i] = matrix[i][j];
 
     rta += vmin[i];
   }
