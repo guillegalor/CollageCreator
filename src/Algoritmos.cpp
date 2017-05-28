@@ -66,7 +66,7 @@ int ValorMin(std::vector<std::vector<int> > matrix, int filas_elim, std::vector<
   return rta;
 }
 
-void BBFunc(std::vector<std::vector<int> > matrix,int& filas_elim, std::vector<int>& columnas_elim, int& cota_sup, int& cota_inf, int& coste, Solucion& sol, Solucion& mejor_sol){
+void BBFunc(std::vector<std::vector<int> > matrix,int filas_elim, std::vector<int> columnas_elim, int& cota_sup, int& cota_inf, int& coste, Solucion sol, Solucion& mejor_sol){
   // Condiciones de parada
   if (coste >= cota_sup)
     exit(0);//algo que todavia no se lo que devolverd
@@ -75,4 +75,26 @@ void BBFunc(std::vector<std::vector<int> > matrix,int& filas_elim, std::vector<i
     cota_sup = coste;
     mejor_sol = sol;
   }
+  else{
+    // Recorremos todas las columnas para explorar el nivel filas_elim. No tenemos en cuenta
+      // las columnas ya utilizadas
+    int vmin;
+    for (unsigned int j = 0; j < matrix[filas_elim].size(); j++) {
+      if (!In(columnas_elim, j)) {
+        //Creamos una copia de las columnas eliminadas añadiendo la actual
+        std::vector<int> columnas_elim_j = std::vector<int>(columnas_elim);
+        columnas_elim_j.push_back(j);
+        //Calculamos el valor minimo aproximado
+        vmin = ValorMin(matrix, filas_elim+1, columnas_elim_j);
+        //Comprobamos si es un valor valido, y exploramos a partir de este nodo
+        if (vmin < cota_sup) {
+          //Sol ahora mismo lo estoy usando como si fuera un vector de tamaño N*M, en el que
+            // en cada posicion guardo la foto que se le asigna al respectivo pixel
+          sol.set(filas_elim,j);
+          BBFunc(matrix, filas_elim+1, columnas_elim_j, cota_sup, cota_inf, coste, sol, mejor_sol);
+        }
+      }
+    }
+  }
+
 }
