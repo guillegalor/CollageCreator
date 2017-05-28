@@ -67,5 +67,12 @@ int ValorMin(std::vector<std::vector<int> > matrix, int filas_elim, std::vector<
 }
 
 void BBFunc(std::vector<std::vector<int> > matrix,int& filas_elim, std::vector<int>& columnas_elim, int& cota_sup, int& cota_inf, int& coste, Solucion& sol, Solucion& mejor_sol){
-  
+  // Condiciones de parada
+  if (coste >= cota_sup)
+    exit(0);//algo que todavia no se lo que devolverd
+  // Si las hemos tomado un elemento de cada fila
+  else if (filas_elim >= matrix.size()) {
+    cota_sup = coste;
+    mejor_sol = sol;
+  }
 }
