@@ -1,6 +1,6 @@
-#include "Algoritmos.h"
-#include "Problema.h"
-#include "Solucion.h"
+#include "Problema.cpp"
+#include "Solucion.cpp"
+#include "Algoritmos.cpp"
 #include <iostream>
 
 using namespace std;
