@@ -2,6 +2,7 @@
 #define SOLUCION_H
 
 #include "Problema.h"
+#include <vector>
 
 
 class Solucion
