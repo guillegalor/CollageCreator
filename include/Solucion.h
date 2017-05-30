@@ -43,19 +43,13 @@ class Solucion
     private:
 
         /*
-          La solución es un vector de Num Aristas. Las Aristas se representarán en
-          el vector "Aristas[0..1][0..Num-1]. Cada columna "i" de la matriz será una
-          arista, donde la componente Arista[0][i] es el nodo origen, y la componente
-          Arista[1][i] es el nodo destino.
-
-          Cada nodo se representará con un valor entero, desde 0 hasta
-          p.getNumPlazas()-1, donde "p" es un objeto de la clase "Problema". Dicho nodo
-          se corresponderá con la plaza "p.getNombrePlaza ( Aristas[j][i] )"
+          La solución vendra reprensentada por un vector de tamaño N*M en el que
+          cada elemento contendrá el indice de la foto asignada a dicho pixel y
+          un entero que representará el coste de dicha asignación.
         */
-        int **Aristas;
-        int Num; // Número de aristas en la solución
 
-        double coste; // Coste de la solución
+        std::vector<int> asignacion;
+        int coste;
 };
 
 #endif // SOLUCION_H

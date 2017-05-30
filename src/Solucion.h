@@ -8,54 +8,36 @@ class Solucion
 {
     public:
         Solucion(); // Construye una solución vacía, con coste 0 y sin aristas
-        Solucion(const Solucion & s); // Constructor de copia
-
-        ~Solucion(); // Destructor
-
-        Solucion & operator=(const Solucion & s); // Operador de asignación
 
         /*
-            Devuelve los nodos origen y destino de la arista en la posición "a"
-            de la solución, o origen=-1 y destino=-1 en caso de que no exista
-        */
-        void getArista(int a, int &origen, int &destino);
-
-        double getCoste(); // Devuelve el coste de la solución
-
+        Devuelve el coste actual de la solución (El coste no es un coste real, es
+        el coste hasta el momento)
+         */
+        int getCoste();
 
         /*
-            Evalúa la solución actual en el problema "p". Como resultado, se modifica
-            el coste de la solución actual. El coste será -1 si hay error al evaluar.
-        */
-        void Evaluar(Problema p);
+        Almacena en el pixel el indice de la foto que ocuparía dicho lugar e
+        incrementa el valor del coste actual
 
+        Parámetros:
+          -pixel: Pixel de la foto a rellenar ()
+          -foto: Indice de la foto del vector de fotos que ocupa dicho pixel
+          -coste: coste de insertar esa foto en dicho pixel
+         */
+        void set(int pixel, int foto, int coste);
 
-        /*
-            Modifica la solución actual añadiendo una arista <origen, destino>
-            En caso de que la arista ya exista, no se inserta.
-            En caso de que la arista <destino, origen> ya exista, no se inserta.
-        */
-        void addArista(int origen, int destino);
-
-
-        int getNumAristas(); // Devuelve el número de aristas en la solución
+        // TODO Implementar el resto de funciones necesarias
 
     private:
 
-        /*
-          La solución es un vector de Num Aristas. Las Aristas se representarán en
-          el vector "Aristas[0..1][0..Num-1]. Cada columna "i" de la matriz será una
-          arista, donde la componente Arista[0][i] es el nodo origen, y la componente
-          Arista[1][i] es el nodo destino.
+              /*
+                La solución vendra reprensentada por un vector de tamaño N*M en el que
+                cada elemento contendrá el indice de la foto asignada a dicho pixel y
+                un entero que representará el coste de dicha asignación.
+              */
 
-          Cada nodo se representará con un valor entero, desde 0 hasta
-          p.getNumPlazas()-1, donde "p" es un objeto de la clase "Problema". Dicho nodo
-          se corresponderá con la plaza "p.getNombrePlaza ( Aristas[j][i] )"
-        */
-        int **Aristas;
-        int Num; // Número de aristas en la solución
-
-        double coste; // Coste de la solución
+              std::vector<int> asignacion;
+              int coste;
 };
 
 #endif // SOLUCION_H

@@ -7,7 +7,7 @@ Solucion CollageBranchBound(Problema P){
   // Inicializamos la matriz sobre la que vamos a trabajar
   std::vector<std::vector<int> > matrix = P.getMatrix();
   // Al comienzo tenemos todas las filas y todas las columnas disponibles
-  int filas_elim = 0;
+  int fila_actual = 0;
   std::vector<int> columnas_elim;
   /*
     Calculamos la cota superior inicial tomando elementos en diagonal desde el
@@ -23,12 +23,11 @@ Solucion CollageBranchBound(Problema P){
     suma del minimo de cada fila, por lo que no sabemos si la solución es valida
     o no pero si que es mínima
   */
-  int cota_inf = ValorMin(matrix, filas_elim, columnas_elim);
-  int coste = 0;
+  int cota_inf = ValorMin(matrix, fila_actual, columnas_elim);
   Solucion mejor_sol;
   Solucion sol;
 
-  BBFunc(matrix, filas_elim, columnas_elim, cota_sup, cota_inf, coste, sol, mejor_sol);
+  BBFunc(matrix, fila_actual, columnas_elim, cota_sup, cota_inf, sol, mejor_sol);
 
   return mejor_sol;
 }
@@ -49,12 +48,12 @@ bool In(std::vector<int> v, int n){
 Devuelve la suma del mínimo de cada fila de matrix, excluyendo las filas y columnas
 eliminadas
 */
-int ValorMin(std::vector<std::vector<int> > matrix, int filas_elim, std::vector<int> columnas_elim){
+int ValorMin(std::vector<std::vector<int> > matrix, int fila_actual, std::vector<int> columnas_elim){
   std::vector<int> vmin(matrix.size(),260);   //Usamos 260 pues sabemos que cada elem de la matriz es el valor abs de la diferencia de dos elementos menores que 255
   int rta = 0;
 
   for (unsigned int i = 0; i < matrix.size(); i++)
-    if (i >= filas_elim)
+    if (i >= fila_actual)
       for (unsigned int j = 0; j < matrix[i].size(); j++)
         if (!In(columnas_elim, j) && (matrix[i][j] < vmin[i]))
           vmin[i] = matrix[i][j];
@@ -66,32 +65,33 @@ int ValorMin(std::vector<std::vector<int> > matrix, int filas_elim, std::vector<
   return rta;
 }
 
-void BBFunc(std::vector<std::vector<int> > matrix,int filas_elim, std::vector<int> columnas_elim, int& cota_sup, int& cota_inf, int& coste, Solucion sol, Solucion& mejor_sol){
+void BBFunc(std::vector<std::vector<int> > matrix,int fila_actual, std::vector<int> columnas_elim, int& cota_sup, int& cota_inf, Solucion sol, Solucion& mejor_sol){
   // Condiciones de parada
-  if (coste >= cota_sup)
-    exit(0);//algo que todavia no se lo que devolverd
-  // Si las hemos tomado un elemento de cada fila
-  else if (filas_elim >= matrix.size()) {
-    cota_sup = coste;
+  if (sol.getCoste() >= cota_sup)
+    return;
+  // Si hemos rellenado la foto entera, nos salimos de la iteración, y actualizamos la cota superior
+  else if (fila_actual >= matrix.size()) {
+    cota_sup = sol.getCoste();
     mejor_sol = sol;
+    return;
   }
   else{
-    // Recorremos todas las columnas para explorar el nivel filas_elim. No tenemos en cuenta
+    // Recorremos todas las columnas para explorar el nivel fila_actual. No tenemos en cuenta
       // las columnas ya utilizadas
     int vmin;
-    for (unsigned int j = 0; j < matrix[filas_elim].size(); j++) {
+    for (unsigned int j = 0; j < matrix[fila_actual].size(); j++) {
       if (!In(columnas_elim, j)) {
         //Creamos una copia de las columnas eliminadas añadiendo la actual
         std::vector<int> columnas_elim_j = std::vector<int>(columnas_elim);
         columnas_elim_j.push_back(j);
         //Calculamos el valor minimo aproximado
-        vmin = ValorMin(matrix, filas_elim+1, columnas_elim_j);
+        vmin = ValorMin(matrix, fila_actual+1, columnas_elim_j);
         //Comprobamos si es un valor valido, y exploramos a partir de este nodo
         if (vmin < cota_sup) {
           //Sol ahora mismo lo estoy usando como si fuera un vector de tamaño N*M, en el que
             // en cada posicion guardo la foto que se le asigna al respectivo pixel
-          sol.set(filas_elim,j);
-          BBFunc(matrix, filas_elim+1, columnas_elim_j, cota_sup, cota_inf, coste, sol, mejor_sol);
+          sol.set(fila_actual,j,matrix[fila_actual][j]);
+          BBFunc(matrix, fila_actual+1, columnas_elim_j, cota_sup, cota_inf, sol, mejor_sol);
         }
       }
     }
