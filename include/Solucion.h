@@ -8,7 +8,7 @@
 class Solucion
 {
     public:
-        Solucion(); // Construye una solución vacía, con coste 0
+        Solucion(int tam); // Construye una solución con coste 0 y tamaño tam
 
         /*
         Devuelve el coste actual de la solución (El coste no es un coste real, es

@@ -83,11 +83,11 @@ bool Problema::cargarDesdeFlujo(const char *nombreFichero) {
     for (int i = 0; i < Nfotos; i++)
       fichero >> fotos[i];
 
-/*
+
     while (!fichero.eof()) {
       char a;
       fichero >> a;
-    }*/
+    }
 
     fichero.close();
 

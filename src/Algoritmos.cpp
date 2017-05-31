@@ -6,6 +6,13 @@ using namespace std;
 Solucion CollageBranchBound(Problema P){
   // Inicializamos la matriz sobre la que vamos a trabajar
   vector<vector<int> > matrix = P.getMatrix();
+  /*cout << endl;
+  for(int i=0; i<matrix.size(); i++){
+    for(int j=0; j<matrix[0].size(); j++){
+      cout << matrix[i][j] << " | ";
+    }
+    cout << endl;
+  }*/
   // Al comienzo tenemos todas las filas y todas las columnas disponibles
   int fila_actual = 0;
   vector<int> columnas_elim;
@@ -15,17 +22,21 @@ Solucion CollageBranchBound(Problema P){
     para cada pixel
   */
   int cota_sup = 0;
-  for (unsigned int i = 0; i < matrix.size(); i++) {
+  for (unsigned i = 0; i < matrix.size(); i++) {
     cota_sup += matrix[i][i];
   }
+  //cout << endl << "Cota sup: " << cota_sup << endl;
+
   /*
     Para calcular la cota inf, usamos la funcion ValorMin que nos devuelve la
     suma del minimo de cada fila, por lo que no sabemos si la solución es valida
     o no pero si que es mínima
   */
   int cota_inf = ValorMin(matrix, fila_actual, columnas_elim);
-  Solucion mejor_sol;
-  Solucion sol;
+  //cout << endl << "Cota inf: " << cota_inf << endl;
+
+  Solucion mejor_sol(matrix.size());
+  Solucion sol(matrix.size());
 
   BBFunc(matrix, fila_actual, columnas_elim, cota_sup, cota_inf, sol, mejor_sol);
 
@@ -79,10 +90,10 @@ void BBFunc(vector<vector<int> > matrix, int fila_actual, vector<int> columnas_e
     // Recorremos todas las columnas para explorar el nivel fila_actual. No tenemos en cuenta
       // las columnas ya utilizadas
     int vmin;
-    for (unsigned int j = 0; j < matrix[fila_actual].size(); j++) {
+    for (unsigned j = 0; j < matrix[fila_actual].size(); j++) {
       if (!In(columnas_elim, j)) {
         //Creamos una copia de las columnas eliminadas añadiendo la actual
-        vector<int> columnas_elim_j = vector<int>(columnas_elim);
+        vector<int> columnas_elim_j = columnas_elim;
         columnas_elim_j.push_back(j);
         //Calculamos el valor minimo aproximado
         vmin = ValorMin(matrix, fila_actual+1, columnas_elim_j);
