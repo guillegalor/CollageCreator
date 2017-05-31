@@ -18,7 +18,7 @@ vector<vector<int> > Problema::getMatrix(){
   vector<vector<int> > matrix(filas()*columnas(), vector<int>(fotos.size()));
 
   for(int i = 0; i < filas()*columnas(); i++){
-    for (int j = 0; j < fotos.size(); j++) {
+    for (unsigned j = 0; j < fotos.size(); j++) {
       matrix[i][j] = abs( foto[i/columnas()][i%columnas()] - fotos[j] );
     }
   }
@@ -64,8 +64,8 @@ bool Problema::cargarDesdeFlujo(const char *nombreFichero) {
     foto = vector<vector<int> >(N, vector<int>(M));
 
     // Leemos cada pixel
-    for (unsigned int i= 0; i<N; i++)
-      for (unsigned int j = 0; j < M; j++)
+    for (int i= 0; i<N; i++)
+      for (int j = 0; j < M; j++)
         fichero >> foto[i][j];
 
     // Leemos el numero de fotos
@@ -80,16 +80,35 @@ bool Problema::cargarDesdeFlujo(const char *nombreFichero) {
     fotos = vector<int>(Nfotos);
 
     // Leemos todas las fotos
-    for (unsigned i = 0; i < Nfotos; i++)
+    for (int i = 0; i < Nfotos; i++)
       fichero >> fotos[i];
 
-
+/*
     while (!fichero.eof()) {
       char a;
       fichero >> a;
-    }
+    }*/
 
     fichero.close();
 
     return true;
+}
+
+void Problema::prettyPrint() {
+  cout << "Tamaño de la foto: " << filas() << "x" << columnas() << " bloques" << endl;
+  cout << "Foto: " << endl;
+  cout << "--------------------" << endl;
+  for(int i=0; i<filas(); i++){
+    for(int j=0; j<columnas(); j++){
+      cout << foto[i][j] << " | ";
+    }
+    cout << endl;
+  }
+  cout << "--------------------" << endl;
+
+  cout << "\nNumero de fotos disponibles: " << fotos.size() << endl;
+  for(unsigned i=0; i<fotos.size(); i++){
+    cout << fotos[i] << " | ";
+  }
+  cout << endl;
 }

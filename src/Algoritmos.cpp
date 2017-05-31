@@ -8,7 +8,7 @@ Solucion CollageBranchBound(Problema P){
   vector<vector<int> > matrix = P.getMatrix();
   // Al comienzo tenemos todas las filas y todas las columnas disponibles
   int fila_actual = 0;
-  std::vector<int> columnas_elim;
+  vector<int> columnas_elim;
   /*
     Calculamos la cota superior inicial tomando elementos en diagonal desde el
     (0,0) que sabemos que es siempre valida por elegir una foto distinta
@@ -36,7 +36,7 @@ Solucion CollageBranchBound(Problema P){
 Devuelve si un entero está incluido en un array de enteros o no
 */
 bool In(vector<int> v, int n){
-  for (int i = 0; i < v.size(); i++) {
+  for (unsigned i = 0; i < v.size(); i++) {
     if (v[i] == n) {
       return true;
     }
@@ -64,13 +64,13 @@ int ValorMin(vector<vector<int> > matrix, int filas_elim, vector<int> columnas_e
   return rta;
 }
 
-void BBFunc(std::vector<std::vector<int> > matrix,int fila_actual, std::vector<int> columnas_elim,
+void BBFunc(vector<vector<int> > matrix, int fila_actual, vector<int> columnas_elim,
             int& cota_sup, int& cota_inf, Solucion sol, Solucion& mejor_sol){
   // Condiciones de parada
   if (sol.getCoste() >= cota_sup)
     return;
   // Si hemos rellenado la foto entera, nos salimos de la iteración, y actualizamos la cota superior
-  else if (fila_actual >= matrix.size()) {
+  else if (fila_actual >= (int)matrix.size()) {
     cota_sup = sol.getCoste();
     mejor_sol = sol;
     return;
@@ -88,9 +88,7 @@ void BBFunc(std::vector<std::vector<int> > matrix,int fila_actual, std::vector<i
         vmin = ValorMin(matrix, fila_actual+1, columnas_elim_j);
         //Comprobamos si es un valor valido, y exploramos a partir de este nodo
         if (vmin < cota_sup) {
-          //Sol ahora mismo lo estoy usando como si fuera un vector de tamaño N*M, en el que
-            // en cada posicion guardo la foto que se le asigna al respectivo pixel
-          sol.set(fila_actual,j,matrix[fila_actual][j]);
+          sol.set(fila_actual, j, matrix[fila_actual][j]);
           BBFunc(matrix, fila_actual+1, columnas_elim_j, cota_sup, cota_inf, sol, mejor_sol);
         }
       }

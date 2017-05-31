@@ -8,7 +8,7 @@
 class Solucion
 {
     public:
-        Solucion(); // Construye una solución vacía, con coste 0 y sin aristas
+        Solucion(); // Construye una solución vacía, con coste 0
 
         /*
         Devuelve el coste actual de la solución (El coste no es un coste real, es
@@ -27,7 +27,7 @@ class Solucion
          */
         void set(int pixel, int foto, int coste);
 
-        // TODO Implementar el resto de funciones necesarias
+        int getFoto(int i);
 
     private:
 
@@ -37,7 +37,7 @@ class Solucion
                 un entero que representará el coste de dicha asignación.
               */
 
-              std::vector<int> asignacion;
+              vector<int> asignacion;
               int coste;
 };
 

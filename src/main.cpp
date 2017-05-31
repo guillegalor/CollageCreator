@@ -14,16 +14,20 @@ int main() {
         cout << "El fichero no se puede abrir" << endl;
 
     cout << "PROBLEMA: " << endl;
-    /* Hay que implementar como mostrar el pretty print
     prob.prettyPrint();
-    */
 
     // Resolvemos con algoritmo nuestro algoritmo
     sol = CollageBranchBound(prob);
 
-    /*
-    Mostramos la solución
-    */
+    cout << "SOLUCION: " << endl;
+  /*  cout << "Coste de la solucion: " << sol.getCoste() << endl;
+    cout << "Foto asignada a cada bloque: " << endl;
+    for(int i=0; i<prob.filas(); i++){
+      for(int j=0; j<prob.columnas(); j++){
+        cout << sol.getFoto(i*prob.columnas()+j) << " | ";
+      }
+      cout << endl;
+    }*/
 
    return 0;
 }

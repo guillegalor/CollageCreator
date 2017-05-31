@@ -18,9 +18,12 @@ class Problema{
     int filas();
     int columnas();
 
+    // Imprime el problema en formato legible
+    void prettyPrint();
+
   private:
-    vector<vector<int> > foto;
-    vector<int> fotos;
+    vector<vector<int> > foto;  // Matriz de pixeles de la foto
+    vector<int> fotos;  // Fotos que se van a usar para el mural
 };
 
 #endif // PROBLEMA_H
