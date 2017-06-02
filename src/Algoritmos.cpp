@@ -6,13 +6,13 @@ using namespace std;
 Solucion CollageBranchBound(Problema P){
   // Inicializamos la matriz sobre la que vamos a trabajar
   vector<vector<int> > matrix = P.getMatrix();
-  /*cout << endl;
+  cout << endl;
   for(int i=0; i<matrix.size(); i++){
     for(int j=0; j<matrix[0].size(); j++){
       cout << matrix[i][j] << " | ";
     }
     cout << endl;
-  }*/
+  }
   // Al comienzo tenemos todas las filas y todas las columnas disponibles
   int fila_actual = 0;
   vector<int> columnas_elim;
@@ -25,7 +25,7 @@ Solucion CollageBranchBound(Problema P){
   for (unsigned i = 0; i < matrix.size(); i++) {
     cota_sup += matrix[i][i];
   }
-  //cout << endl << "Cota sup: " << cota_sup << endl;
+  cout << endl << "Cota sup: " << cota_sup << endl;
 
   /*
     Para calcular la cota inf, usamos la funcion ValorMin que nos devuelve la
@@ -33,7 +33,7 @@ Solucion CollageBranchBound(Problema P){
     o no pero si que es mínima
   */
   int cota_inf = ValorMin(matrix, fila_actual, columnas_elim);
-  //cout << endl << "Cota inf: " << cota_inf << endl;
+  cout << endl << "Cota inf: " << cota_inf << endl;
 
   Solucion mejor_sol(matrix.size());
   Solucion sol(matrix.size());
@@ -77,6 +77,7 @@ int ValorMin(vector<vector<int> > matrix, int filas_elim, vector<int> columnas_e
 
 void BBFunc(vector<vector<int> > matrix, int fila_actual, vector<int> columnas_elim,
             int& cota_sup, int& cota_inf, Solucion sol, Solucion& mejor_sol){
+
   // Condiciones de parada
   if (sol.getCoste() >= cota_sup)
     return;
@@ -93,14 +94,25 @@ void BBFunc(vector<vector<int> > matrix, int fila_actual, vector<int> columnas_e
     for (unsigned j = 0; j < matrix[fila_actual].size(); j++) {
       if (!In(columnas_elim, j)) {
         //Creamos una copia de las columnas eliminadas añadiendo la actual
-        vector<int> columnas_elim_j = columnas_elim;
+        std::cout << "\ncolumnas elim " << fila_actual << '\n';
+        vector<int> columnas_elim_j(columnas_elim);
+        for(int i=0; i<columnas_elim.size();i++){
+          cout << columnas_elim[i] << " | ";
+        }
+        cout << endl;
         columnas_elim_j.push_back(j);
+        std::cout << "\ncolumanas elim j " << fila_actual << '\n';
+        for(int i=0; i<columnas_elim_j.size();i++){
+          cout << columnas_elim_j[i] << " | ";
+        }
         //Calculamos el valor minimo aproximado
         vmin = ValorMin(matrix, fila_actual+1, columnas_elim_j);
         //Comprobamos si es un valor valido, y exploramos a partir de este nodo
-        if (vmin < cota_sup) {
-          sol.set(fila_actual, j, matrix[fila_actual][j]);
-          BBFunc(matrix, fila_actual+1, columnas_elim_j, cota_sup, cota_inf, sol, mejor_sol);
+        Solucion aux_sol(sol);
+        aux_sol.set(fila_actual, j, matrix[fila_actual][j]);
+        std::cout << "\nfila actual: "<< fila_actual << " J = " << j << " Vmin " << vmin << " Coste " << aux_sol.getCoste() <<'\n';
+        if (vmin+aux_sol.getCoste() < cota_sup) {
+          BBFunc(matrix, fila_actual+1, columnas_elim_j, cota_sup, cota_inf, aux_sol, mejor_sol);
         }
       }
     }
