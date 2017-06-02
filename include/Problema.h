@@ -15,8 +15,8 @@ class Problema{
     // Devuelve la matriz sobre la que aplicaremos el algoritmo de Branch&Bound
     vector<vector<int> > getMatrix();
 
-    int filas();
-    int columnas();
+    int filas();  // Numero de filas de la foto
+    int columnas(); // Numero de columnas de la foto
 
     // Imprime el problema en formato legible
     void prettyPrint();
